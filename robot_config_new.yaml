@@ -1,0 +1,166 @@
+arm_actions:  # 机械臂抓/放轨迹（按高度分组）
+  height_1:
+    arm_action_1:
+        left_arm_traj: [-45, 15, 0, -45, -5, -3, -15]
+        right_arm_traj: [-45, -15, 0, -45, 5, -3, -15]
+    arm_action_2:
+        left_arm_traj: [-50, -15, 0, -30, -5, 0, -15]
+        right_arm_traj: [-50, 15, 0, -30, -5, 0, -15]
+
+  height_2: 
+    arm_action_1:
+      left_arm_traj: [-55, 0, 0, -40, 0, 0, 10]
+      right_arm_traj: [-55, 0, 0, -40, 0, 0, 10]
+    arm_action_2:
+      left_arm_traj: [-55, -2, 0, -40, 0, 0, 10]
+      right_arm_traj: [-55, -2, 0, -40, 0, 0, 10]
+
+  height_3: 
+    arm_action_1:
+      left_arm_traj: [-55, 0, 0, -45, 0, 0, 10]
+      right_arm_traj: [-55, 0, 0, -45, 0, 0, 10]
+    arm_action_2:
+      left_arm_traj: [-55, -2, 0, -45, 0, 0, 10]
+      right_arm_traj: [-55, -2, 0, -45, 0, 0, 10]
+
+  height_4: 
+    arm_action_1:
+      left_arm_traj: [-130, 0, 0, 0, 0, 0, 30]
+      right_arm_traj: [-130, 0, 0, 0, 0, 0, 30]
+    arm_action_2:
+      left_arm_traj: [-128, 0, 0, -70, 35, 0, 30]
+      right_arm_traj: [-128, 0, 0, -70, -35, 0, 30]   
+
+robot_params:  # 机器人整体流程参数
+  task_repeat: 10000                # 任务循环次数
+  catched_leave_height: 0.23     # 抓取完成后抬升高度(m)
+  step_speed: 0.7                # 抓取/放置阶段步进速度(m/s)
+  step_back_distance: 0.69       # 抓取后后退距离(m)
+
+  positions:  # 关键位置坐标(m/rad)
+    catch_point:  # 抓取点
+      x: -7.78
+      y: -27.44
+      theta: 3.12
+    place_left:  # 左侧放置列
+      x: -7.41
+      y: -27.18
+      theta: 1.56
+    place_right:  # 右侧放置列
+      x: -6.91
+      y: -27.16
+      theta: 1.57
+
+  barcode_scan:  # 条码扫描参数
+    ahead:
+      distance: 0.24
+      speed: 0.8
+    left:
+      distance: 0.00
+      speed: 0.8
+    back:
+      distance: 0.0
+      speed: 0.8
+    right:
+      distance: 0.26
+      speed: 0.8
+    height: 0.38  # 扫码升降高度(m)
+
+  apriltag_scan:  # AprilTag识别步进参数
+    ahead:
+      distance: 0.0    # 无需前进
+      speed: 0.8
+    left:
+      distance: 0.25
+      speed: 1.2      
+    back:
+      distance: 0.25   # 后退留出视觉空间
+      speed: 0.8
+    right:
+      distance: 0.0
+      speed: 0.8
+
+  catching:  # 抓取环节参数
+    height: 0.24                # 抓取点升降高度(m)
+    catch_height_last: 0.21     # 抓取最终高度(m)
+    x_distance: 0.95            # 抓取时距箱体水平间距(m)
+    travel_height: 0.28         # 携箱移动高度(m)
+    right_adjust_distance: 0.19 # 抓取右移调整距离(m)
+
+    use_fixed_advance: false    # 是否使用固定前进距离
+    fixed_advance_distance: 0.12 # 固定前进距离(m)
+
+  placements:  # 放置环节分层参数
+    # 通用层级参数（适用于所有货架）
+    first_layer:
+      target_height: 0.25       # 第一层升降高度(m)
+      ahead_distance: 0.9       # 第一层前进距离(m)
+    second_layer:
+      target_height: 0.58       # 第二层升降高度(m)
+      ahead_distance: 0.9       # 第二层前进距离(m)
+    third_layer:
+      target_height: 0.60       # 第三层升降高度(m)
+      ahead_distance: 0.9       # 第三层前进距离(m)
+    
+    # A货架专用参数
+    rack_A:
+      first_layer:
+        target_height: 0.22      # A货架第一层高度(m)
+        ahead_distance: 0.95     # A货架第一层前进距离(m)
+        extra_wait_time: 5.0     # A货架额外等待时间(秒)
+      second_layer:
+        target_height: 0.55      # A货架第二层高度(m)
+        ahead_distance: 0.88     # A货架第二层前进距离(m)
+        extra_wait_time: 5.0
+      third_layer:
+        target_height: 0.55      # A货架第三层高度(m)
+        ahead_distance: 0.95     # A货架第三层前进距离(m)
+        extra_wait_time: 5.0
+    
+    # B货架 - 左列（B1, B3, B5）
+    rack_B_left:
+      first_layer:
+        target_height: 0.22      # B货架左列第一层高度(m)
+        ahead_distance: 0.80     # B1前进距离(m) - 可调整
+        extra_wait_time: 5.0
+      second_layer:
+        target_height: 0.55      # B货架左列第二层高度(m)
+        ahead_distance: 0.80     # B3前进距离(m) - 可调整
+        extra_wait_time: 5.0
+      third_layer:
+        target_height: 0.67      # B货架左列第三层高度(m)
+        ahead_distance: 0.80     # B5前进距离(m) - 可调整
+        extra_wait_time: 5.0
+    
+    # B货架 - 右列（B2, B4, B6）
+    rack_B_right:
+      first_layer:
+        target_height: 0.22      # B货架右列第一层高度(m)
+        ahead_distance: 0.77     # B2前进距离(m) - 可调整
+        extra_wait_time: 5.0
+      second_layer:
+        target_height: 0.55      # B货架右列第二层高度(m)
+        ahead_distance: 0.77     # B4前进距离(m) - 可调整
+        extra_wait_time: 5.0
+      third_layer:
+        target_height: 0.67      # B货架右列第三层高度(m)
+        ahead_distance: 0.77     # B6前进距离(m) - 可调整
+        extra_wait_time: 5.0
+
+  drop_detection:  # 掉箱检测参数
+    threshold_12: 0.2           # 左臂俯仰关节电流阈值(A)
+    threshold_13: 3.3           # 左臂横滚关节电流阈值(A)
+    check_interval: 0.1         # 检测间隔(s)
+    consecutive_counts: 10      # 连续判定次数
+    debug_mode: true            # 调试模式开关
+
+  weight_detection:  # 重量检测参数
+    enable: true                # 启用重量检测
+    light_threshold: 9.5        # 轻箱电流阈值(A)：<9.5
+    heavy_threshold: 10.75      # 重箱电流阈值(A)：>10.75
+    # 中等重量：9.5 ≤ 电流 ≤ 10.75
+    
+    # 高度调整偏移量(m)
+    light_height_offset: -0.04  # 轻箱高度偏移
+    medium_height_offset: -0.03 # 中箱高度偏移
+    heavy_height_offset: 0.0    # 重箱高度偏移
